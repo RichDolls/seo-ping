@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>Backlink Ping</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    ul { line-height: 1.6; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <h1>Backlink Ping</h1>
+  <p>Ниже автоматически сгенерирован список всех внешних ссылок из <code>github.txt</code>:</p>
+  <ul id="links"></ul>
+
+  <script>
+    fetch('github.txt')
+      .then(response => response.text())
+      .then(text => {
+        const ul = document.getElementById('links');
+        text.split(/\r?\n/).filter(u => u.trim()).forEach(url => {
+          const li = document.createElement('li');
+          const a  = document.createElement('a');
+          a.href        = url;
+          a.textContent = url;
+          a.target      = '_blank';
+          li.appendChild(a);
+          ul.appendChild(li);
+        });
+      })
+      .catch(err => {
+        console.error('Не удалось загрузить github.txt:', err);
+        document.getElementById('links').textContent = 'Ошибка загрузки списка ссылок.';
+      });
+  </script>
+</body>
+</html>
